@@ -265,9 +265,6 @@ tags
 
 .ipython/
 .env
-.envs/*
-!.envs/.local/
-
 data
 
 sb.sqlite3

@@ -1,0 +1,13 @@
+#env app
+APP_ENV=local
+DJANGO_SECRET_KEY=django-insecure-ce*lt_q9c!5ka*#8!rkw5x1c51@ojz@)ar+fv(+7k5mod3pb45
+
+# PostgreSQL
+POSTGRES_HOST=db
+POSTGRES_DB=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_PORT=5432
+
+#django debug
+DJANGO_DEBUG=False
