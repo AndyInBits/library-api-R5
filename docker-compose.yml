@@ -10,8 +10,11 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
   web:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    build:
+      context: .
+      dockerfile: ./Dockerfiles/Dockerfile.local
+    restart: on-failure
+    env_file: ./.envs/.local
     volumes:
       - ./src:/code
     ports:
