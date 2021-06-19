@@ -2,7 +2,7 @@
 from django.db import models
 
 # Utilities
-from src.utils.models import CommonModel
+from utils.models import CommonModel
 
 
 class Author(CommonModel):
@@ -10,16 +10,16 @@ class Author(CommonModel):
 
     Model to store the data of the authors of the books.
     """
-    first_name = models.TextField(
+    first_name = models.CharField(
         'first name',
-        max_length=255,
+        max_length=150,
         blank=False,
         null=False,
         help_text="Name author"
     )
-    last_name = models.TextField(
+    last_name = models.CharField(
         'last name',
-        max_length=255,
+        max_length=150,
         blank=False,
         null=False,
         help_text="Name author"
