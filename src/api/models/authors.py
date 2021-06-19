@@ -27,7 +27,7 @@ class Author(CommonModel):
 
     def __str__(self):
         """Return name author."""
-        return self.first_name
+        return '{} {}'.format(self.first_name, self.last_name)
 
     def get_full_name(self):
         """Return full name author."""

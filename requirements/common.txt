@@ -7,3 +7,10 @@ psycopg2-binary>=2.8
 
 # Environment
 django-environ
+
+# django rest framework
+djangorestframework
+django-filter
+
+# cors support django
+django-cors-headers
