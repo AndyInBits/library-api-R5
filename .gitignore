@@ -269,3 +269,5 @@ tags
 !.envs/.local/
 
 data
+
+sb.sqlite3
