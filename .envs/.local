@@ -11,3 +11,7 @@ POSTGRES_PORT=5432
 
 #django debug
 DJANGO_DEBUG=False
+
+# Google API KEY
+GOOGLE_API_KEY=AIzaSyBm59NTj8WR3je0Iw5seHbb8rdmUyd_gjY
+GOOGLE_API_BOOKS_URL=https://www.googleapis.com/books/v1/volumes

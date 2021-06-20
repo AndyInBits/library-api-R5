@@ -10,6 +10,14 @@ from rest_framework.generics import ListAPIView
 # django rest framework filter
 from rest_framework import filters
 
+# external services consult book
+from .services import get_books_external_api
+
+# asynnc io
+import asyncio
+
+loop = asyncio.get_event_loop()
+
 
 class BookList(ListAPIView):
     """ Book list api view """
@@ -43,7 +51,9 @@ class BookList(ListAPIView):
         """
         for backend in list(self.filter_backends):
             queryset = backend().filter_queryset(self.request, queryset, self)
-
         if len(queryset) <= 0:
             print("voy a consultar a los apis")
+            argument = self.request.query_params['search']
+            queryset = get_books_external_api(argument)
+
         return queryset
