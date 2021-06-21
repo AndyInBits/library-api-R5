@@ -15,5 +15,17 @@ django-filter
 # cors support django
 django-cors-headers
 
-# async request
-httpx
+#request
+requests
+
+# django ASGI
+uvicorn
+
+# celery for async task
+celery
+
+# redis lib
+redis
+
+# auto reload
+watchdog

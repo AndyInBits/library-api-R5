@@ -1,14 +1,8 @@
 version: "3.9"
 
 services:
-  db:
-    image: postgres
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+  redis:
+    image: redis:3.2
   web:
     build:
       context: .
@@ -19,5 +13,28 @@ services:
       - ./src:/code
     ports:
       - "8000:8000"
+    command: sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+
+  celery:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfiles/Dockerfile.local
+    command: "celery -A api worker -l info"
+    env_file: ./.envs/.local
+    volumes:
+      - ./src:/code
     depends_on:
-      - db
+      - redis
+
+  celerybeat:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfiles/Dockerfile.local
+    env_file: ./.envs/.local
+    command: "celery -A api beat -l INFO"
+    volumes:
+      - ./src:/code
+    depends_on:
+      - redis

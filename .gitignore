@@ -265,6 +265,7 @@ tags
 
 .ipython/
 .env
-data
 
 sb.sqlite3
+
+celerybeat-schedule

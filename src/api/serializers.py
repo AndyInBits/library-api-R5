@@ -5,41 +5,33 @@ from rest_framework import serializers
 from .models import *
 
 
-class CategoryModelSerializer(serializers.ModelSerializer):
-    """Category model serializer."""
-
-    class Meta:
-        """Meta class."""
-        model = Category
-        fields = ('name',)
-
-
-class AuthorModelSerializer(serializers.ModelSerializer):
-    """Author model serializer."""
-    class Meta:
-        """Meta class."""
-        model = Author
-        fields = ('get_full_name',)
-
-
 class BookModelSerializer(serializers.ModelSerializer):
     """Book model serializer."""
-    authors = serializers.StringRelatedField(many=True)
-    categories = serializers.StringRelatedField(many=True)
+    authors = serializers.StringRelatedField(many=True, read_only=False)
+    categories = serializers.StringRelatedField(many=True, read_only=False)
 
     class Meta:
         """Meta class."""
         model = Book
-        fields = (
-            'title',
-            'sub_title',
-            'publish_date',
-            'editor',
-            'description',
-            'image',
-            'source_book',
-            'authors',
-            'categories',
-            'created',
-            'modified'
-        )
+        fields = fields = '__all__'
+
+
+class BookCreateModelSerializer(serializers.ModelSerializer):
+    """Book create model serializer."""
+
+    class Meta:
+        """Meta class."""
+        model = Book
+        fields = fields = '__all__'
+
+    def create(self, validated_data):
+        """ overwrite method create of serializer """
+
+        authors = validated_data.pop('authors')
+        categories = validated_data.pop('categories')
+        books = Book.objects.create(**validated_data)
+        for auth in authors:
+            books.authors.add(auth)
+        for cat in categories:
+            books.categories.add(cat)
+        return books

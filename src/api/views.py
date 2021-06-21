@@ -13,14 +13,19 @@ from rest_framework import filters
 # external services consult book
 from .services import get_books_external_api
 
-# asynnc io
-import asyncio
+# cache libs
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
-loop = asyncio.get_event_loop()
+# local task create books
+from .tasks import create_book
 
 
 class BookList(ListAPIView):
     """ Book list api view """
+    @method_decorator(cache_page(60))
+    def dispatch(self, *args, **kwargs):
+        return super(BookList, self).dispatch(*args, **kwargs)
 
     queryset = Book.objects.all()
     serializer_class = BookModelSerializer
@@ -34,26 +39,18 @@ class BookList(ListAPIView):
         'description',
         'image',
         'source_book',
-        'authors__first_name',
-        'authors__last_name',
+        'authors__name',
         'categories__name'
     ]
     ordering_fields = ['title', ]
 
     def filter_queryset(self, queryset):
-        """
-        Given a queryset, filter it with whichever filter backend is in use.
+        """ overwrite method filter_queryset to add functionality y validation of response """
 
-        You are unlikely to want to override this method, although you may need
-        to call it either from a list view, or from a custom `get_object`
-        method if you want to apply the configured filtering backend to the
-        default queryset.
-        """
         for backend in list(self.filter_backends):
             queryset = backend().filter_queryset(self.request, queryset, self)
         if len(queryset) <= 0:
-            print("voy a consultar a los apis")
-            argument = self.request.query_params['search']
-            queryset = get_books_external_api(argument)
-
+            queryset = get_books_external_api(
+                self.request.query_params['search'])
+            create_book.delay(queryset)
         return queryset

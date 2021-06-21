@@ -16,21 +16,22 @@ class Book(CommonModel):
     title = models.CharField(
         'book title',
         max_length=255,
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         help_text="Book title"
     )
     sub_title = models.CharField(
         'book sub title',
         max_length=255,
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         help_text="Book sub title"
     )
 
-    publish_date = models.DateTimeField(
-        blank=False,
-        null=False
+    publish_date = models.CharField(
+        max_length=150,
+        blank=True,
+        null=True,
     )
     editor = models.CharField(
         'book editor',
@@ -42,8 +43,8 @@ class Book(CommonModel):
 
     description = models.TextField(
         'book description',
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         help_text="Book description"
     )
 
@@ -62,8 +63,8 @@ class Book(CommonModel):
         help_text="Book source"
     )
 
-    authors = models.ManyToManyField(Author)
-    categories = models.ManyToManyField(Category)
+    authors = models.ManyToManyField(Author, blank=True)
+    categories = models.ManyToManyField(Category, blank=True)
 
     def __str__(self):
         """Return title book."""

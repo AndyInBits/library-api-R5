@@ -16,8 +16,8 @@ class BookAdmin(admin.ModelAdmin):
 
 class AuthorAdmin(admin.ModelAdmin):
     """Author model admin."""
-    list_display = ('pk', 'first_name', 'last_name',)
-    list_filter = ('first_name', 'last_name', )
+    list_display = ('pk', 'name', )
+    list_filter = ('name',)
 
 
 class CategoryAdmin(admin.ModelAdmin):

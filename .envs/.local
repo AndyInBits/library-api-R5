@@ -3,7 +3,7 @@ APP_ENV=local
 DJANGO_SECRET_KEY=django-insecure-ce*lt_q9c!5ka*#8!rkw5x1c51@ojz@)ar+fv(+7k5mod3pb45
 
 # PostgreSQL
-POSTGRES_HOST=db
+POSTGRES_HOST=myinstance.cvbrxbqb2llj.us-east-1.rds.amazonaws.com
 POSTGRES_DB=postgres
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
@@ -15,3 +15,6 @@ DJANGO_DEBUG=False
 # Google API KEY
 GOOGLE_API_KEY=AIzaSyBm59NTj8WR3je0Iw5seHbb8rdmUyd_gjY
 GOOGLE_API_BOOKS_URL=https://www.googleapis.com/books/v1/volumes
+
+# open library API
+OPEN_LIBRARY_API=http://openlibrary.org/search.json?q=
