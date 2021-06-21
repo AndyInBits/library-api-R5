@@ -1,11 +1,14 @@
 # local models
 from .models import *
 
+# Django models users
+from django.contrib.auth.models import User
+
 # local Book model serializers
-from .serializers import BookModelSerializer
+from .serializers import BookModelSerializer, SignupSerializer
 
 # django rest framework generics views
-from rest_framework.generics import ListAPIView, DestroyAPIView
+from rest_framework.generics import ListAPIView, DestroyAPIView, CreateAPIView
 
 # django rest framework filter
 from rest_framework import filters
@@ -20,13 +23,14 @@ from django.views.decorators.cache import cache_page
 # local task create books
 from .tasks import create_book
 
+# django rest framework auth validate
+from rest_framework.permissions import IsAuthenticated, AllowAny
+
 
 class BookList(ListAPIView):
     """ Book list api view """
-    @method_decorator(cache_page(30))
-    def dispatch(self, *args, **kwargs):
-        return super(BookList, self).dispatch(*args, **kwargs)
 
+    permission_classes = (IsAuthenticated,)
     queryset = Book.objects.all()
     serializer_class = BookModelSerializer
     filter_backends = [filters.SearchFilter]
@@ -44,6 +48,11 @@ class BookList(ListAPIView):
     ]
     ordering_fields = ['title', ]
 
+    @method_decorator(cache_page(3))
+    def dispatch(self, *args, **kwargs):
+        """ overwrite method dispatch """
+        return super(BookList, self).dispatch(*args, **kwargs)
+
     def filter_queryset(self, queryset):
         """ overwrite method filter_queryset to add functionality y validation of response """
         for backend in list(self.filter_backends):
@@ -56,4 +65,12 @@ class BookList(ListAPIView):
 
 
 class BookDelete(DestroyAPIView):
+    """ Delete Book view """
+    permission_classes = (IsAuthenticated,)
     queryset = Book.objects.all()
+
+
+class SignupViewSet(CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = SignupSerializer

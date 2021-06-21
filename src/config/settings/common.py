@@ -46,7 +46,13 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 
-THIRD_PARTY_APPS = ['rest_framework',  'corsheaders',  'django_filters', ]
+THIRD_PARTY_APPS = [
+    'rest_framework',
+    'corsheaders',
+    'django_filters',
+    'rest_framework.authtoken',
+]
+
 LOCAL_APPS = ['api']
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 

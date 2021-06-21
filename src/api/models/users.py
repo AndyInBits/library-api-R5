@@ -16,6 +16,7 @@ class User(CommonModel, AbstractUser):
     """
 
     USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['email', 'password']
 
     email = models.EmailField(
         'email address',
@@ -26,9 +27,5 @@ class User(CommonModel, AbstractUser):
     )
 
     def __str__(self):
-        """Return username."""
-        return self.username
-
-    def get_short_name(self):
-        """Return username."""
-        return self.username
+        """Return email."""
+        return self.email
