@@ -27,6 +27,7 @@ def create_book(data):
                     obj, created = Author.objects.get_or_create(name=aut)
                     authors.append(obj.pk)
                 item['authors'] = authors
+        item['source_book'] = 'db'
 
     serializer_data = BookCreateModelSerializer(data=data, many=True)
     if serializer_data.is_valid():

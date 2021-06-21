@@ -21,6 +21,3 @@ RUN pip install -r requirements/local.txt
 COPY ./src /code/
 EXPOSE 8002
 
-
-# RUN chmod +x /code/start.sh
-# ENTRYPOINT ["sh","/code/start.sh"]

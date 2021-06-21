@@ -5,7 +5,7 @@ from .models import *
 from .serializers import BookModelSerializer
 
 # django rest framework generics views
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, DestroyAPIView
 
 # django rest framework filter
 from rest_framework import filters
@@ -23,7 +23,7 @@ from .tasks import create_book
 
 class BookList(ListAPIView):
     """ Book list api view """
-    @method_decorator(cache_page(60))
+    @method_decorator(cache_page(30))
     def dispatch(self, *args, **kwargs):
         return super(BookList, self).dispatch(*args, **kwargs)
 
@@ -46,7 +46,6 @@ class BookList(ListAPIView):
 
     def filter_queryset(self, queryset):
         """ overwrite method filter_queryset to add functionality y validation of response """
-
         for backend in list(self.filter_backends):
             queryset = backend().filter_queryset(self.request, queryset, self)
         if len(queryset) <= 0:
@@ -54,3 +53,7 @@ class BookList(ListAPIView):
                 self.request.query_params['search'])
             create_book.delay(queryset)
         return queryset
+
+
+class BookDelete(DestroyAPIView):
+    queryset = Book.objects.all()
